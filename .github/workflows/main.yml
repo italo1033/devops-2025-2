@@ -35,4 +35,15 @@ jobs:
         run: |
               SHA=$(echo $GITHUB_SHA | head -c7 )
               echo "sha=$SHA" >> $GITHUB_OUTPUT 
-      
+
+      - name : LOGIN
+        uses: docker/login-action@v3
+        with:
+          username: ${{secrets.DOCKERHUB_USERNAME}}
+          password: ${{secrets.DOCKERHUB_TOKEN}}
+
+      - name: BUILD
+        run: docker build -t ${{secrets.DOCKERHUB_USERNAME}}/italo-santos:${{steps.generate_tag.outputs.sha}}
+
+      - name: PUSH DOCKER
+        run: docker push ${{secrets.DOCKERHUB_USERNAME}}/italo-santos:${{steps.generate_tag.outputs.sha}}
