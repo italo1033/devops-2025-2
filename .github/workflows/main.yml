@@ -37,11 +37,10 @@ jobs:
             exit 1
           fi
 
-      - name: Run tests
-        # assumindo runner linux; executa o script ./test.bad
+      - name: Run pytest inside /app
         run: |
-          chmod +x ./test.bad || true
-          ./test.bad
+          cd app
+          pytest tests
 
       - name: Generate tag
         id: generate_tag
